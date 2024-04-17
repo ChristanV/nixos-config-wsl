@@ -5,13 +5,15 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ config, lib, users, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
     # include NixOS-WSL modules
     <nixos-wsl/modules>
   ];
+
+  #nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   users.users.christan = {
     isNormalUser = true;
@@ -21,9 +23,8 @@
   };
 
   wsl.enable = true;
-  wsl.defaultUser = "nixos";
   wsl.docker-desktop.enable = true;
-
+  wsl.wslConf.network.hostname = "chrisdevops";
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
@@ -40,7 +41,6 @@
     pkgs.git
     pkgs.azure-cli
   ];
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
