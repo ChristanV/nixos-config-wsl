@@ -13,18 +13,15 @@
     <nixos-wsl/modules>
   ];
 
-  #nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  users.users.christan = {
-    isNormalUser = true;
-    home = "/home/christan";
-    description = "Its a me Mario";
-    extraGroups  = [ "wheel" "networkmanager" ];
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   wsl.enable = true;
+  wsl.defaultUser = "christan";
   wsl.docker-desktop.enable = true;
   wsl.wslConf.network.hostname = "chrisdevops";
+  wsl.wslConf.boot.command = ""; #Default startup commands
+  wsl.wslConf.user.default = "christan";
+
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
@@ -40,6 +37,7 @@
     pkgs.kubectx
     pkgs.git
     pkgs.azure-cli
+    pkgs.nodejs_21
   ];
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
