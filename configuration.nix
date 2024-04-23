@@ -37,7 +37,6 @@
     pkgs.kubectx
     pkgs.git
     pkgs.azure-cli
-    pkgs.nodejs_21
   ];
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
