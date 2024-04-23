@@ -19,9 +19,15 @@
   wsl.defaultUser = "christan";
   wsl.docker-desktop.enable = true;
   wsl.wslConf.network.hostname = "chrisdevops";
+  wsl.wslConf.network.generateResolvConf = false;
   wsl.wslConf.boot.command = ""; #Default startup commands
   wsl.wslConf.user.default = "christan";
+  
+  networking.nameservers = ["8.8.8.8" "1.1.1.1"];
 
+  environment.etc = {
+    "resolv.conf".text = "nameserver 8.8.8.8\n nameerver 1.1.1.1";
+  };
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
@@ -31,13 +37,16 @@
     pkgs.neovim
     pkgs.awscli2
     pkgs.python310Packages.ansible-core
-    pkgs.terraform
     pkgs.docker
     pkgs.kubectl
     pkgs.kubectx
     pkgs.git
     pkgs.azure-cli
+    pkgs.gnumake
+    pkgs.busybox
+    pkgs.terraform
   ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave

@@ -11,3 +11,14 @@ exit
 wsl --shutdown
 wsl -s NixOS
 wsl -d NixOS
+
+
+
+
+##
+
+To run unstable packages 
+nix-shell -I nixpkgs=channel:nixpkgs-unstable -p somepackage
+
+Normal shell without .nix
+nix-shell -p somePackage
