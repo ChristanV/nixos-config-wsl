@@ -6,8 +6,22 @@
 # https://github.com/nix-community/NixOS-WSL
 
 { config, lib, pkgs, ... }:
-
-{
+  let
+    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+  in {
+    environment.systemPackages = with pkgs; [
+      neovim
+      awscli2
+      python310Packages.ansible-core
+      docker
+      kubectl
+      kubectx
+      git
+      azure-cli
+      gnumake
+      busybox
+      unstable.terraform
+    ];
   imports = [
     # include NixOS-WSL modules
     <nixos-wsl/modules>
@@ -31,20 +45,6 @@
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
-  ];
-
-  environment.systemPackages = [
-    pkgs.neovim
-    pkgs.awscli2
-    pkgs.python310Packages.ansible-core
-    pkgs.docker
-    pkgs.kubectl
-    pkgs.kubectx
-    pkgs.git
-    pkgs.azure-cli
-    pkgs.gnumake
-    pkgs.busybox
-    pkgs.terraform
   ];
 
   # This value determines the NixOS release from which the default
