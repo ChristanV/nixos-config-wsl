@@ -21,6 +21,10 @@
       gnumake
       busybox
       unstable.terraform
+      yaml-language-server
+      ansible-language-server
+      ansible-lint
+      python3
     ];
   imports = [
     # include NixOS-WSL modules
