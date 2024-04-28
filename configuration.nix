@@ -69,6 +69,10 @@
     enableOnBoot = true;
     autoPrune.enable = true;
   };
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
   systemd.services.docker-desktop-proxy.script = lib.mkForce ''${config.wsl.wslConf.automount.root}/wsl/docker-desktop/docker-desktop-user-distro proxy --docker-desktop-root ${config.wsl.wslConf.automount.root}/wsl/docker-desktop "C:\Program Files\Docker\Docker\resources"'';
 
   # This value determines the NixOS release from which the default
