@@ -10,7 +10,12 @@
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in {
     environment.systemPackages = with pkgs; [
+      # Core Packages
       neovim
+      gnumake
+      busybox
+
+      # Core Development Packages
       awscli2
       python310Packages.ansible-core
       docker
@@ -18,13 +23,18 @@
       kubectx
       git
       azure-cli
-      gnumake
-      busybox
       unstable.terraform
+      python3
+
+      # LSP's
       yaml-language-server
       ansible-language-server
       ansible-lint
-      python3
+      lua-language-server
+      nodePackages.typescript-language-server
+      nodePackages.bash-language-server
+      java-language-server
+      dockerfile-language-server-nodejs
     ];
   imports = [
     # include NixOS-WSL modules
