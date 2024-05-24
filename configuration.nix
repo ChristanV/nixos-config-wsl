@@ -1,19 +1,18 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
-
 { config, lib, pkgs, ... }:
   let
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in {
+
+    # Using stable channel packages by default prefix with 'unstable.' 
+    # for latest versions
     environment.systemPackages = with pkgs; [
       # Core Packages
       neovim
       gnumake
       busybox
+      wget
 
       # Core Development Packages
       awscli2
@@ -27,7 +26,7 @@
       python3
       postgresql
 
-      # LSP's
+      # LSP's for neovim
       yaml-language-server
       ansible-language-server
       ansible-lint
@@ -38,12 +37,23 @@
       dockerfile-language-server-nodejs
     ];
   imports = [
-    # include NixOS-WSL modules
+    # Include NixOS-WSL modules
     <nixos-wsl/modules>
+
+    #vscode integration https://github.com/nix-community/nixos-vscode-server
+    (fetchTarball "https://github.com/nix-community/nixos-vscode-server/tarball/master")
+  ];
+  
+  # Licenced Packages
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "terraform"
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  services.vscode-server.enable = true;
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
+  # Base WSL setup
   wsl.enable = true;
   wsl.defaultUser = "christan";
   wsl.wslConf.network.hostname = "chrisdevops";
@@ -57,18 +67,17 @@
     "resolv.conf".text = "nameserver 8.8.8.8\n nameerver 1.1.1.1";
   };
 
+  # Set bash aliases
   environment.etc."bashrc".text = ''
     alias kc='kubectl'
     alias kctx='kubectx'
     alias kns='kubens'
     alias tf='terraform'
-    alias vi='nvim'
-    alias nix='sudo nixos-rebuild switch'
+    alias vi='nvim .'
+    alias nixr='sudo nixos-rebuild switch'
+    alias nixb='nixos-rebuild build'
+    alias nixs='nix-shell'
   '';
-
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "terraform"
-  ];
 
   #Docker-desktop workaround to work with WSL
   #Enable WSL integration on docker desktop
@@ -81,6 +90,11 @@
       { src = "${coreutils}/bin/whoami"; }
       { src = "${coreutils}/bin/ls"; }
       { src = "${busybox}/bin/addgroup"; }
+      { src = "${coreutils}/bin/uname"; }
+      { src = "${coreutils}/bin/dirname"; }
+      { src = "${coreutils}/bin/readlink"; }
+      { src = "${coreutils}/bin/sed"; }
+      { src = "/run/current-system/sw/bin/sed"; }
       { src = "${su}/bin/groupadd"; }
       { src = "${su}/bin/usermod"; }
   ];
