@@ -25,6 +25,7 @@
       azure-cli
       unstable.terraform
       python3
+      postgresql
 
       # LSP's
       yaml-language-server
@@ -55,6 +56,15 @@
   environment.etc = {
     "resolv.conf".text = "nameserver 8.8.8.8\n nameerver 1.1.1.1";
   };
+
+  environment.etc."bashrc".text = ''
+    alias kc='kubectl'
+    alias kctx='kubectx'
+    alias kns='kubens'
+    alias tf='terraform'
+    alias vi='nvim'
+    alias nix='sudo nixos-rebuild switch'
+  '';
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
