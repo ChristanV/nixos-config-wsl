@@ -1,14 +1,23 @@
-set-config:
-	@cp -f configuration.nix /etc/nixos/configuration.nix
-
 switch:
+	@echo 'Copying configuration.nix to /etc/nixos/'
+	@cp -f configuration.nix /etc/nixos/configuration.nix
+	@echo 'Switching to new NixOs configuration'
 	@nixos-rebuild switch
 
 build:
+	@echo 'Copying configuration.nix to /etc/nixos/'
+	@cp -f configuration.nix /etc/nixos/configuration.nix
+	@echo 'Building new NixOs configuration'
 	@nixos-rebuild build
 
 boot:
+	@echo 'Copying configuration.nix to /etc/nixos/'
+	@cp -f configuration.nix /etc/nixos/configuration.nix
+	@echo 'Boot to new NixOs configuration'
 	@nixos-rebuild boot
 
 test:
+	@echo 'Copying configuration.nix to /etc/nixos/'
+	@cp -f configuration.nix /etc/nixos/configuration.nix
+	@echo 'Test new NixOs configuration'
 	@nixos-rebuild test

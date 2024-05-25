@@ -34,9 +34,7 @@ Copy configuration.nix in /etc/nixos/configuration.nix
 
 Alternatively run using the included makefile.
 
-1. `sudo make set-config`
-
-2. `sudo make switch`
+1. `sudo make switch`
 
 Finally run
 
@@ -49,8 +47,6 @@ On first install restart WSL
 ### 3. Set NixOs as default WSL Distro
 In Powershell run  
 * `wsl -s NixOS`
-* `wsl -d NixOS`
-
 
 ### Notes
 

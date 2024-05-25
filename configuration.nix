@@ -77,6 +77,12 @@
     alias nixr='sudo nixos-rebuild switch'
     alias nixb='nixos-rebuild build'
     alias nixs='nix-shell'
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+    alias kcgp='kc get pods -l app.kubernetes.io/instance='
+    alias kcgd='kc get deploy -l app.kubernetes.io/instance='
+    alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
   '';
 
   #Docker-desktop workaround to work with WSL
