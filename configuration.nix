@@ -3,6 +3,8 @@
 { config, lib, pkgs, ... }:
   let
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+    username = "christan"; #Use own username
+    hostname = "chrisdevops";
   in {
 
     # Using stable channel packages by default prefix with 'unstable.' 
@@ -55,17 +57,54 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   # Base WSL setup
-  wsl.enable = true;
-  wsl.defaultUser = "christan";
-  wsl.wslConf.network.hostname = "chrisdevops";
-  wsl.wslConf.network.generateResolvConf = false;
-  wsl.wslConf.boot.command = ""; #Default startup commands
-  wsl.wslConf.user.default = "christan";
+  wsl = {
+    enable = true;
+    defaultUser = username;
+    wslConf.network.hostname = hostname;
+    wslConf.network.generateResolvConf = false;
+    wslConf.boot.command = ""; #Default startup commands
+    wslConf.user.default = username;
+
+    #Docker-desktop workaround to work with WSL
+    #Enable WSL integration on docker desktop
+    #https://github.com/nix-community/NixOS-WSL/issues/235
+    docker-desktop.enable = false;
+    extraBin = with pkgs; [
+      # Binaries for Docker Desktop wsl-distro-proxy
+      { src = "${coreutils}/bin/mkdir"; }
+      { src = "${coreutils}/bin/cat"; }
+      { src = "${coreutils}/bin/whoami"; }
+      { src = "${coreutils}/bin/ls"; }
+      { src = "${busybox}/bin/addgroup"; }
+      { src = "${coreutils}/bin/uname"; }
+      { src = "${coreutils}/bin/dirname"; }
+      { src = "${coreutils}/bin/readlink"; }
+      { src = "${coreutils}/bin/sed"; }
+      { src = "/run/current-system/sw/bin/sed"; }
+      { src = "${su}/bin/groupadd"; }
+      { src = "${su}/bin/usermod"; }
+    ];
+  };
+  
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = true;
+    autoPrune.enable = true;
+  };
+
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
+  systemd.services.docker-desktop-proxy.script = lib.mkForce ''
+    ${config.wsl.wslConf.automount.root}/wsl/docker-desktop/docker-desktop-user-distro proxy --docker-desktop-root ${config.wsl.wslConf.automount.root}/wsl/docker-desktop "C:\Program Files\Docker\Docker\resources"
+  '';
   
   networking.nameservers = ["8.8.8.8" "1.1.1.1"];
 
   environment.etc = {
-    "resolv.conf".text = "nameserver 8.8.8.8\n nameerver 1.1.1.1";
+    "resolv.conf".text = "nameserver 8.8.8.8\n nameserver 1.1.1.1";
   };
 
   # Set bash aliases
@@ -85,36 +124,6 @@
     alias kcgd='kc get deploy -l app.kubernetes.io/instance='
     alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
   '';
-
-  #Docker-desktop workaround to work with WSL
-  #Enable WSL integration on docker desktop
-  #https://github.com/nix-community/NixOS-WSL/issues/235
-  wsl.docker-desktop.enable = false;
-  wsl.extraBin = with pkgs; [
-      # Binaries for Docker Desktop wsl-distro-proxy
-      { src = "${coreutils}/bin/mkdir"; }
-      { src = "${coreutils}/bin/cat"; }
-      { src = "${coreutils}/bin/whoami"; }
-      { src = "${coreutils}/bin/ls"; }
-      { src = "${busybox}/bin/addgroup"; }
-      { src = "${coreutils}/bin/uname"; }
-      { src = "${coreutils}/bin/dirname"; }
-      { src = "${coreutils}/bin/readlink"; }
-      { src = "${coreutils}/bin/sed"; }
-      { src = "/run/current-system/sw/bin/sed"; }
-      { src = "${su}/bin/groupadd"; }
-      { src = "${su}/bin/usermod"; }
-  ];
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-    autoPrune.enable = true;
-  };
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
-  };
-  systemd.services.docker-desktop-proxy.script = lib.mkForce ''${config.wsl.wslConf.automount.root}/wsl/docker-desktop/docker-desktop-user-distro proxy --docker-desktop-root ${config.wsl.wslConf.automount.root}/wsl/docker-desktop "C:\Program Files\Docker\Docker\resources"'';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
