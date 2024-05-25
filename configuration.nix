@@ -40,6 +40,10 @@
       nodePackages.bash-language-server
       java-language-server
       dockerfile-language-server-nodejs
+
+      # Other
+      fd
+      ripgrep
     ];
   imports = [
     # Include NixOS-WSL modules
