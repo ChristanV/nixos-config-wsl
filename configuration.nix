@@ -3,8 +3,8 @@
 { config, lib, pkgs, ... }:
   let
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-    username = "christan"; #Use own username
-    hostname = "chrisdevops";
+    username = "christan"; # Use own username
+    hostname = "chrisdevops"; # Use own hostname
   in {
 
     # Using stable channel packages by default prefix with 'unstable.' 
@@ -43,7 +43,7 @@
     # Include NixOS-WSL modules
     <nixos-wsl/modules>
 
-    #vscode integration https://github.com/nix-community/nixos-vscode-server
+    # vscode integration https://github.com/nix-community/nixos-vscode-server
     (fetchTarball "https://github.com/nix-community/nixos-vscode-server/tarball/master")
   ];
   
@@ -65,9 +65,9 @@
     wslConf.boot.command = ""; #Default startup commands
     wslConf.user.default = username;
 
-    #Docker-desktop workaround to work with WSL
-    #Enable WSL integration on docker desktop
-    #https://github.com/nix-community/NixOS-WSL/issues/235
+    # Docker-desktop workaround to work with WSL
+    # Enable WSL integration on docker desktop
+    # https://github.com/nix-community/NixOS-WSL/issues/235
     docker-desktop.enable = false;
     extraBin = with pkgs; [
       # Binaries for Docker Desktop wsl-distro-proxy
