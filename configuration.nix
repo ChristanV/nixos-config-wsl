@@ -30,6 +30,8 @@
       postgresql
 
       # LSP's for neovim
+      terraform-ls
+      tflint
       yaml-language-server
       ansible-language-server
       ansible-lint
