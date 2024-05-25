@@ -13,6 +13,7 @@
       gnumake
       busybox
       wget
+      stern
 
       # Core Development Packages
       awscli2
