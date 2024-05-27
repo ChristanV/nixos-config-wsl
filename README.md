@@ -25,24 +25,19 @@ In Powershell run
 ### 2. Setup NixOs
 * `sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable`
 * `sudo nix-channel --update && sudo nixos-rebuild switch`
-* `nix-env -iA nixos.neovim` #Optional step (use own editor preference)
-* `nix-env -iA nixos.git`
-* `nix-env -iA nixos.gnumake`
+* `nix-env -iA nixos.neovim` # Optional step if you want to rename wsl username & hostname (or use own editor preference)
+* `nix-env -iA nixos.git && nix-env -iA nixos.gnumake`
 
-Clone the repo and edit variables if needed
-Copy configuration.nix in /etc/nixos/configuration.nix
+Clone the repo and edit variables if needed (change username and hostname)
+Copy configuration.nix in /etc/nixos/configuration.nix and run `sudo nixos-rebuild switch`
 
 Alternatively run using the included makefile.
 
-1. `sudo make switch`
+* `sudo make switch`
 
-Finally run
+On first install restart NixOs WSL distro on powershell
 
-`sudo nixos-rebuild switch`
-
-On first install restart WSL 
-
-`wsl --shudown`
+`wsl --terminate NixOs`
 
 ### 3. Set NixOs as default WSL Distro
 In Powershell run  
@@ -50,10 +45,11 @@ In Powershell run
 
 ### Notes
 
+If you have changed the wsl default user you will need to reclone this in the new users home folder.
+
 Known unstable items I am still trying to resolve.
 
-* docker-desktop integration
-* vscode remote integration
+* Sometimes first time switch fails on new installs, rerunning resolves the issue. 
 
 See samples folder for configuration files for nix shell for dev environments
 
