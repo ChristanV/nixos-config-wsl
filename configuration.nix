@@ -23,6 +23,7 @@
       docker
       kubectl
       kubectx
+      kubelogin
       git
       azure-cli
       unstable.terraform
@@ -44,6 +45,7 @@
       # Other
       fd
       ripgrep
+      google-chrome
     ];
   imports = [
     # Include NixOS-WSL modules
@@ -56,6 +58,7 @@
   # Licenced Packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
+    "google-chrome"
   ];
 
   services.vscode-server.enable = true;
