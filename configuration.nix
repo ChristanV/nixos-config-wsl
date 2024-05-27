@@ -116,7 +116,7 @@
     "resolv.conf".text = "nameserver 8.8.8.8\n nameserver 1.1.1.1";
   };
 
-  # Set bash aliases
+  # Set bash aliases and default editor
   environment.etc."bashrc".text = ''
     alias kc='kubectl'
     alias kctx='kubectx'
@@ -132,6 +132,7 @@
     alias kcgp='kc get pods -l app.kubernetes.io/instance='
     alias kcgd='kc get deploy -l app.kubernetes.io/instance='
     alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
+    export EDITOR="nvim"
   '';
 
   # This value determines the NixOS release from which the default
