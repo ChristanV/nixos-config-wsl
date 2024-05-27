@@ -29,6 +29,7 @@
       unstable.terraform
       python3
       postgresql
+      eksctl
 
       # LSP's for neovim
       terraform-ls
