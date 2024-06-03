@@ -21,3 +21,15 @@ test:
 	@cp -f configuration.nix /etc/nixos/configuration.nix
 	@echo 'Test new NixOs configuration'
 	@nixos-rebuild test
+
+channel-update:
+	@nix-channel --update
+
+cleanup:
+	@nix-collect-garbage -d
+
+upgrade:
+	@echo 'Copying configuration.nix to /etc/nixos/'
+	@cp -f configuration.nix /etc/nixos/configuration.nix
+	@echo 'Upgrade to new NixOs configuration'
+	@nixos-rebuild switch --upgrade

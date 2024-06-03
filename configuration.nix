@@ -16,6 +16,11 @@
       busybox
       wget
       stern
+      jq
+      yq
+      kubernetes-helm
+      openssl
+      go-task
 
       # Core Development Packages
       awscli2
