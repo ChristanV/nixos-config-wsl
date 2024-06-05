@@ -47,6 +47,7 @@
       nodePackages.bash-language-server
       java-language-server
       dockerfile-language-server-nodejs
+      pyright
 
       # Other
       fd
