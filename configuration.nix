@@ -48,6 +48,8 @@
       java-language-server
       dockerfile-language-server-nodejs
       pyright
+      gopls
+      nodePackages.typescript-language-server
 
       # Other
       fd
@@ -57,6 +59,7 @@
       # Development
       go
       nodejs_21
+      typescript
     ];
   imports = [
     # Include NixOS-WSL modules
