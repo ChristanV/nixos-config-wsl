@@ -140,6 +140,7 @@
     alias kcgd='kc get deploy -l app.kubernetes.io/instance='
     alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
     export EDITOR="nvim"
+    export KUBE_CONFIG_PATH=~/.kube/config
   '';
 
   # This value determines the NixOS release from which the default
