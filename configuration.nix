@@ -5,6 +5,9 @@
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
     username = "christan"; # Use own username
     hostname = "chrisdevops"; # Use own hostname
+
+    # Workaround to To open a new pane and tab on windows terminal using same pwd
+    prompt_command = "\${PROMPT_COMMAND:+\"$PROMPT_COMMAND; \"}";
   in {
 
     # Using stable channel packages by default prefix with 'unstable.' 
@@ -128,6 +131,7 @@
   environment.etc = {
     "resolv.conf".text = "nameserver 8.8.8.8\n nameserver 1.1.1.1";
   };
+  
 
   # Set bash aliases and default editor
   environment.etc."bashrc".text = ''
@@ -147,6 +151,7 @@
     alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
     export EDITOR="nvim"
     export KUBE_CONFIG_PATH=~/.kube/config
+    PROMPT_COMMAND=${prompt_command}'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
   '';
 
   # This value determines the NixOS release from which the default

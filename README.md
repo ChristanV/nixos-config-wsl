@@ -54,3 +54,30 @@ Known unstable items I am still trying to resolve.
 See samples folder for configuration files for nix shell for dev environments
 
 I have no idea how nix flakes work.
+
+If you are using windows terminal add the following aliases to split window and tabs if you want to preserve the current working directory
+
+settings.json
+
+
+ 	{ 
+	    "command": "duplicateTab",
+	    "keys": "ctrl+shift+d" 
+	},
+	{ 
+	    "command": {
+		    "action": "splitPane",
+	        "splitMode": "duplicate",
+		    "split": "vertical"
+	    },
+	    "keys": "ctrl+shift+n"
+	},
+	{ 
+	    "command": {
+		    "action": "splitPane",
+	        "splitMode": "duplicate",
+		    "split": "horizontal"
+	    },
+	    "keys": "ctrl+shift+m"
+	}
+
