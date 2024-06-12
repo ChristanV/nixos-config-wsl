@@ -52,7 +52,11 @@
       # Other
       fd
       ripgrep
-      google-chrome
+      chromium
+
+      # Development
+      go
+      nodejs_21
     ];
   imports = [
     # Include NixOS-WSL modules
@@ -65,7 +69,6 @@
   # Licenced Packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "terraform"
-    "google-chrome"
   ];
 
   services.vscode-server.enable = true;
