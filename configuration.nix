@@ -58,6 +58,9 @@
       fd
       ripgrep
       chromium
+      flyctl
+      sops
+      gnupg
 
       # Development
       go
