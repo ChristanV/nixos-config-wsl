@@ -27,14 +27,14 @@
 
       # Core Development Packages
       awscli2
-      python310Packages.ansible-core
+      python312Packages.ansible-core
       docker
       kubectl
       kubectx
       kubelogin
       git
       azure-cli
-      unstable.terraform
+      terraform
       python3
       postgresql
       eksctl
@@ -64,7 +64,7 @@
 
       # Development
       go
-      nodejs_21
+      nodejs_22
       typescript
     ];
   imports = [
@@ -131,11 +131,6 @@
   
   networking.nameservers = ["8.8.8.8" "1.1.1.1"];
 
-  environment.etc = {
-    "resolv.conf".text = "nameserver 8.8.8.8\n nameserver 1.1.1.1";
-  };
-  
-
   # Set bash aliases and default editor
   environment.etc."bashrc".text = ''
     alias kc='kubectl'
@@ -163,5 +158,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }

@@ -66,18 +66,26 @@ settings.json
 	},
 	{ 
 	    "command": {
-		    "action": "splitPane",
-	        "splitMode": "duplicate",
-		    "split": "vertical"
+            "action": "splitPane",
+            "splitMode": "duplicate",
+            "split": "vertical"
 	    },
 	    "keys": "ctrl+shift+n"
 	},
 	{ 
 	    "command": {
-		    "action": "splitPane",
-	        "splitMode": "duplicate",
-		    "split": "horizontal"
+            "action": "splitPane",
+            "splitMode": "duplicate",
+            "split": "horizontal"
 	    },
 	    "keys": "ctrl+shift+m"
 	}
 
+
+WSL2 DNS fix
+
+Set the following in your `.wslconf`
+
+    [wsl2]
+    networkingMode=mirrored
+    dnsTunneling=false
