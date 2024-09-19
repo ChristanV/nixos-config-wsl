@@ -28,6 +28,7 @@
       # Core Development Packages
       awscli2
       python312Packages.ansible-core
+      virtualenv
       docker
       kubectl
       kubectx
@@ -61,6 +62,7 @@
       flyctl
       sops
       gnupg
+      nmap
 
       # Development
       go
