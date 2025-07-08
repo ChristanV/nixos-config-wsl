@@ -1,120 +1,125 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 { config, lib, pkgs, ... }:
-  let
-    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-    username = "christan"; # Use own username
-    hostname = "chrisdevops"; # Use own hostname
+let
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+  username = "christan"; # Use own username
+  hostname = "chrisdevops"; # Use own hostname
 
-    azure-cli = pkgs.azure-cli.withExtensions [
-      pkgs.azure-cli-extensions.bastion
-      pkgs.azure-cli-extensions.ssh
-    ];
-  in {
+  azure-cli = pkgs.azure-cli.withExtensions [
+    pkgs.azure-cli-extensions.bastion
+    pkgs.azure-cli-extensions.ssh
+  ];
+in {
 
-    # Using stable channel packages by default prefix with 'unstable.' 
-    # for latest versions
-    environment.systemPackages = with pkgs; [
-      # Core Packages
-      neovim
-      gnumake
-      busybox
-      wget
-      stern
-      jq
-      yq
-      kubernetes-helm
-      openssl
-      go-task
-      virtualenv
-      kubectl
-      kubectx
-      kubelogin
-      git
-      postgresql
-      eksctl
-      lazygit
-      fd
-      ripgrep
-      chromium
-      flyctl
-      sops
-      gnupg
-      k9s
-      ssm-session-manager-plugin
-      azure-cli
-      awscli2
-      docker_26
-      docker-compose
+  # Using stable channel packages by default prefix with 'unstable.' 
+  # for latest versions
+  environment.systemPackages = with pkgs; [
+    # Core Packages
+    neovim
+    gnumake
+    busybox
+    wget
+    stern
+    jq
+    yq
+    kubernetes-helm
+    openssl
+    go-task
+    virtualenv
+    kubectl
+    kubectx
+    kubelogin
+    git
+    postgresql
+    eksctl
+    lazygit
+    fd
+    ripgrep
+    chromium
+    flyctl
+    sops
+    gnupg
+    k9s
+    ssm-session-manager-plugin
+    azure-cli
+    awscli2
+    docker_26
+    docker-compose
 
-      # LSP's for neovim
-      terraform-ls
-      terraform-lsp
-      tflint
-      yaml-language-server
-      ansible-language-server
-      ansible-lint
-      lua-language-server
-      nodePackages.typescript-language-server
-      nodePackages.bash-language-server
-      jdt-language-server
-      postgres-lsp
+    # LSP's for neovim
+    terraform-ls
+    terraform-lsp
+    tflint
+    yaml-language-server
+    ansible-language-server
+    ansible-lint
+    lua-language-server
+    nodePackages.typescript-language-server
+    nodePackages.bash-language-server
+    jdt-language-server
+    postgres-lsp
 
-      dockerfile-language-server-nodejs
-      pyright
-      gopls
-      nodePackages.typescript-language-server
-      helm-ls
-      nixd
+    dockerfile-language-server-nodejs
+    pyright
+    gopls
+    nodePackages.typescript-language-server
+    helm-ls
+    nixd
 
-      # Development
-      terraform
-      terragrunt
-      python312Full
-      python312Packages.ansible-core
-      go
-      nodejs_22
-      typescript
-      lua
-      yarn
-      k3s
-      minikube
-      jdk23
+    # Development
+    terraform
+    terragrunt
+    python312Full
+    python312Packages.ansible-core
+    go
+    nodejs_22
+    typescript
+    lua
+    yarn
+    k3s
+    minikube
+    jdk23
+    nixfmt
 
-      # Other
-      starship
-      zsh
-      glow
-      nvidia-container-toolkit
-      steampipe
-      tmux
-      btop
-      fzf
-      plantuml
-      graphviz
-    ];
+    # Other
+    starship
+    zsh
+    glow
+    nvidia-container-toolkit
+    steampipe
+    tmux
+    btop
+    fzf
+    plantuml
+    graphviz
+  ];
   imports = [
     # Include NixOS-WSL modules
     <nixos-wsl/modules>
 
     # vscode integration https://github.com/nix-community/nixos-vscod?e-server
-    (fetchTarball "https://github.com/nix-community/nixos-vscode-server/tarball/master")
+    (fetchTarball
+      "https://github.com/nix-community/nixos-vscode-server/tarball/master")
   ];
 
   # Licenced/Unfree/Broken Packages
   nixpkgs.config = {
     allowUnfree = false;
-    allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "terraform" "nvidia-x11" "nvidia-settings"
-    ];
+    allowUnfreePredicate = pkg:
+      builtins.elem (lib.getName pkg) [
+        "terraform"
+        "nvidia-x11"
+        "nvidia-settings"
+      ];
     allowBroken = false;
   };
 
   # Allow linked libraries
   programs.nix-ld = {
-      enable = true;
-      package = pkgs.nix-ld-rs; # Fix for vscode 24.05
-      libraries = config.hardware.opengl.extraPackages;
+    enable = true;
+    package = pkgs.nix-ld-rs; # Fix for vscode 24.05
+    libraries = config.hardware.opengl.extraPackages;
   };
 
   # Docker
@@ -126,25 +131,21 @@
       setSocketVariable = false;
       daemon.settings = {
         features.cdi = true;
-        cdi-spec-dirs = ["/home/${username}/.cdi"];
+        cdi-spec-dirs = [ "/home/${username}/.cdi" ];
       };
-    };    
+    };
   };
-  
+
   hardware = {
     nvidia-container-toolkit = {
       enable = true;
       mount-nvidia-executables = false;
     };
-    nvidia = {
-      open = true;
-    };
+    nvidia = { open = true; };
   };
 
   services = {
-    vscode-server = {
-      enable = true;
-    };
+    vscode-server = { enable = true; };
     xserver.videoDrivers = [ "nvidia" ];
   };
 
@@ -162,11 +163,11 @@
     ohMyZsh = {
       enable = true;
       theme = "agnoster";
-      plugins = [ 
+      plugins = [
         "git"
         "z"
         "history"
-        "sudo" 
+        "sudo"
         "docker"
         "docker-compose"
         "aws"
@@ -228,7 +229,7 @@
     defaultUser = username;
     wslConf.network.hostname = hostname;
     wslConf.network.generateResolvConf = false;
-    wslConf.boot.command = ""; #Default startup commands
+    wslConf.boot.command = ""; # Default startup commands
     wslConf.user.default = username;
     useWindowsDriver = true;
 
@@ -241,7 +242,9 @@
       { src = "${coreutils}/bin/uname"; }
       { src = "${coreutils}/bin/dirname"; }
       { src = "${coreutils}/bin/readlink"; }
-      { src = "${coreutils}/bin/sed"; }
+      {
+        src = "${coreutils}/bin/sed";
+      }
 
       #Allows .sh files to be run
       { src = "/run/current-system/sw/bin/sed"; }
@@ -249,9 +252,9 @@
       { src = "${su}/bin/usermod"; }
     ];
   };
-  
+
   # DNS fix for WSL2
-  networking.nameservers = ["8.8.8.8" "1.1.1.1"];
+  networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
