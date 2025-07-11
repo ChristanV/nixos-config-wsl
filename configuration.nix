@@ -80,7 +80,7 @@ in {
     k3s
     minikube
     jdk23
-    nixfmt
+    nixfmt-classic
 
     # Other
     starship
