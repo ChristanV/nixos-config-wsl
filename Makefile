@@ -1,6 +1,3 @@
-symlink:
-	@ln -sf ~/nixos-config-wsl/configuration.nix /etc/nixos/configuration.nix
-
 switch:
 	@echo 'Switching to new NixOs configuration'
 	@nixos-rebuild switch
