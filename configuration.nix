@@ -81,6 +81,7 @@ in {
     minikube
     jdk23
     nixfmt-classic
+    gitleaks
 
     # Other
     starship
