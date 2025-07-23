@@ -206,6 +206,10 @@ in {
     # Fix for ollama for neovim
     export XDG_RUNTIME_DIR="/tmp/"
 
+    # Disabling paging by default
+    export PAGER=cat
+    export LESS=
+
     export EDITOR="nvim"
     export KUBE_CONFIG_PATH=~/.kube/config
     export STARSHIP_CONFIG=~/.config/starship-config/starship.toml
