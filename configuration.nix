@@ -209,16 +209,6 @@ in {
               
               # Add new AWS_PROFILE line
               echo "export AWS_PROFILE=\"$profile\"" >> "$AWS_SECRETS_FILE"
-              
-              # Update .env file in current directory
-              if [ -f .env ]; then
-                  sed -i '/^AWS_PROFILE=/d' .env
-                  echo "AWS_PROFILE=$profile" >> .env
-              else
-                  echo "AWS_PROFILE=$profile" > .env
-              fi
-              
-              # echo "Set AWS_PROFILE to: $profile"
           else
               echo "No profile selected"
           fi
@@ -247,14 +237,6 @@ in {
               fi
               
               echo "export OP_SESSION_GHVJK7LLTZFHTPYPNTI5A3JZV4=\"$profile\"" >> "$ONEPASS_SECRETS_FILE"
-              
-              # Update .env file in current directory
-              if [ -f .env ]; then
-                  sed -i '/^OP_SESSION_GHVJK7LLTZFHTPYPNTI5A3JZV4=/d' .env
-                  echo "OP_SESSION_GHVJK7LLTZFHTPYPNTI5A3JZV4=$profile" >> .env
-              else
-                  echo "OP_SESSION_GHVJK7LLTZFHTPYPNTI5A3JZV4=$profile" > .env
-              fi
           fi
       }
     '';
@@ -266,6 +248,11 @@ in {
       fi
       if [ -f "$HOME/.config/secrets/onepassenv" ]; then
           source "$HOME/.config/secrets/onepassenv"
+      fi
+
+      # Source Other env vars - manually add these
+      if [ -f "$HOME/.config/secrets/env" ]; then
+          source "$HOME/.config/secrets/env"
       fi
     '';
   };
