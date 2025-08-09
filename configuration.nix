@@ -300,6 +300,10 @@ in {
     EOF
   '';
 
+  systemd.tmpfiles.rules = [
+    "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash"
+  ];
+
   wsl = {
     enable = true;
     defaultUser = username;
