@@ -1,4 +1,3 @@
 #!/usr/bin/env sh
-
-echo "Symlinking configuration.nix"
-ln -sf ~/nixos-config-wsl/configuration.nix /etc/nixos/configuration.nix
+echo "Symlinking NixOS configuration"
+ln -sfn ~/nixos-config-wsl/ /etc/nixos/
