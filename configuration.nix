@@ -1,6 +1,6 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   username = "christan"; # Use own username
@@ -322,9 +322,7 @@ in {
     EOF
   '';
 
-  systemd.tmpfiles.rules = [
-    "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash"
-  ];
+  systemd.tmpfiles.rules = [ "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash" ];
 
   wsl = {
     enable = true;
