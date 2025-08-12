@@ -13,7 +13,7 @@ Make sure the following is installed for this quickstart.
 
 Download the WSL distribution for NixOS follow reference link below.
 
-https://github.com/nix-community/NixOS-WSL/releases/tag/2411.6.0
+https://github.com/nix-community/NixOS-WSL/releases/tag/2505.7.0
 
 Reference: https://nix-community.github.io/NixOS-WSL/install.html
 Packages: https://search.nixos.org/packages
@@ -24,15 +24,14 @@ In Powershell run
 * `wsl -d NixOS`
 
 ### 2. Setup NixOs first install
-* `sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable`
 * `sudo nix-channel --update && sudo nixos-rebuild switch`
 * `nix-env -iA nixos.neovim` # Optional step if you want to rename wsl username & hostname (or use own editor preference)
 * `nix-env -iA nixos.git && nix-env -iA nixos.gnumake`
 
-Clone the repo and edit variables if needed (change username and hostname)
-Copy configuration.nix in /etc/nixos/configuration.nix and run `sudo nixos-rebuild boot` (Not switch as it may misconfigure on first setup)
+Clone the repo and edit variables in var.nix if needed (change username and hostname)
+Copy configuration.nix in /etc/nixos/configuration.nix and run `sudo nixos-rebuild boot --flake .` (Not switch as it may misconfigure on first setup)
 
-Alternatively run using the included makefile.
+Alternatively run using the included taskfile.
 
 * `sudo make boot`
 
@@ -65,16 +64,3 @@ Known unstable items I am still trying to resolve.
 See samples folder for configuration files for nix shell for dev environments
 
 Nerdfonts is installed externally and added to windows terminal
-
-I have no idea how nix flakes work.
-
-### WSL2 DNS fix
-
-Set the following in your `.wslconf`
-
-    [wsl2]
-    networkingMode=mirrored
-    dnsTunneling=false
-
-### Getting docker to run with Nvidia containers
-Reference: https://github.com/nix-community/NixOS-WSL/discussions/487

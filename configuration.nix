@@ -1,117 +1,12 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
-{ config, pkgs, ... }:
-let
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-  username = "christan"; # Use own username
-  hostname = "wsl"; # Use own hostname
+{ config, pkgs, var, ... }:
 
-  azure-cli = pkgs.azure-cli.withExtensions [
-    pkgs.azure-cli-extensions.bastion
-    pkgs.azure-cli-extensions.ssh
-  ];
-in {
+{
+  system.stateVersion = "25.05";
 
-  # Using stable channel packages by default prefix with 'unstable.' 
-  # for latest versions
-  environment.systemPackages = with pkgs; [
-    # Core Packages
-    neovim
-    gnumake
-    busybox
-    wget
-    stern
-    jq
-    yq
-    kubernetes-helm
-    openssl
-    go-task
-    virtualenv
-    kubectl
-    kubectx
-    kubelogin
-    git
-    postgresql
-    eksctl
-    lazygit
-    fd
-    ripgrep
-    chromium
-    flyctl
-    sops
-    gnupg
-    k9s
-    ssm-session-manager-plugin
-    azure-cli
-    awscli2
-    docker_26
-    docker-compose
-    unstable.claude-code
-
-    # LSP's for neovim
-    terraform-ls
-    terraform-lsp
-    tflint
-    yaml-language-server
-    ansible-language-server
-    ansible-lint
-    lua-language-server
-    nodePackages.typescript-language-server
-    nodePackages.bash-language-server
-    jdt-language-server
-    postgres-lsp
-
-    dockerfile-language-server-nodejs
-    pyright
-    gopls
-    nodePackages.typescript-language-server
-    helm-ls
-    nixd
-
-    # Development
-    unstable.terraform
-    terragrunt
-    python312Full
-    python312Packages.ansible-core
-    go
-    nodejs_22
-    typescript
-    lua
-    yarn
-    k3s
-    minikube
-    jdk23
-    nixfmt-classic
-    gitleaks
-    pre-commit
-    trunk-io
-    tfsec
-    terraform-docs
-    tflint
-    tfupdate
-
-    # Security
-    clamav
-    _1password-cli
-
-    # Other
-    starship
-    zsh
-    glow
-    steampipe
-    tmux
-    btop
-    fzf
-    plantuml
-    graphviz
-    xclip
-  ];
-  imports = [
-    <nixos-wsl/modules>
-    # vscode integration https://github.com/nix-community/nixos-vscode-server
-    (fetchTarball
-      "https://github.com/nix-community/nixos-vscode-server/tarball/master")
-  ];
+  # DNS fix for WSL2
+  networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -134,13 +29,12 @@ in {
       setSocketVariable = true;
       daemon.settings = {
         features.cdi = true;
-        cdi-spec-dirs = [ "/home/${username}/.cdi" ];
+        cdi-spec-dirs = [ "/home/${var.username}/.cdi" ];
       };
     };
   };
 
   services = {
-    vscode-server = { enable = true; };
     clamav = {
       daemon.enable = true;
       updater.enable = true;
@@ -152,7 +46,7 @@ in {
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  users.users."${username}" = {
+  users.users."${var.username}" = {
     extraGroups = [ "docker" ];
     shell = pkgs.zsh;
   };
@@ -326,11 +220,11 @@ in {
 
   wsl = {
     enable = true;
-    defaultUser = username;
-    wslConf.network.hostname = hostname;
+    defaultUser = var.username;
+    wslConf.network.hostname = var.hostname;
     wslConf.network.generateResolvConf = false;
     wslConf.boot.command = ""; # Default startup commands
-    wslConf.user.default = username;
+    wslConf.user.default = var.username;
     useWindowsDriver = true;
 
     extraBin = with pkgs; [
@@ -352,9 +246,4 @@ in {
       { src = "${su}/bin/usermod"; }
     ];
   };
-
-  # DNS fix for WSL2
-  networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
-
-  system.stateVersion = "24.11";
 }

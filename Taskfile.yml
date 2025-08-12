@@ -5,28 +5,28 @@ tasks:
     desc: 'Switching to new NixOs configuration'
     cmds:
       - echo 'Switching to new NixOs configuration'
-      - nixos-rebuild switch 
+      - nixos-rebuild switch --flake .
     silent: false
 
   build:
     desc: 'Building new NixOs configuration'
     cmds:
       - echo 'Building new NixOs configuration'
-      - nixos-rebuild build 
+      - nixos-rebuild build --flake .
     silent: false
 
   boot:
     desc: 'Boot to new NixOs configuration'
     cmds:
       - echo 'Boot to new NixOs configuration'
-      - nixos-rebuild boot 
+      - nixos-rebuild boot --flake .
     silent: false
 
   test:
     desc: 'Test new NixOs configuration'
     cmds:
       - echo 'Test new NixOs configuration'
-      - nixos-rebuild test 
+      - nixos-rebuild test --flake .
     silent: false
 
   channel-update:
@@ -35,7 +35,13 @@ tasks:
       - nix-channel --update
     silent: false
 
-  cleanup:
+  flake-update:
+    desc: 'Update flakes'
+    cmds:
+      - nix flake update
+    silent: false
+
+  clean:
     desc: 'Clean up old nix generations'
     cmds:
       - nix-collect-garbage -d --delete-older-than 3d
@@ -45,13 +51,15 @@ tasks:
     desc: 'Upgrade to new NixOs configuration'
     cmds:
       - echo 'Upgrade to new NixOs configuration'
-      - nixos-rebuild switch --upgrade 
+      - nixos-rebuild switch --upgrade --flake .
     silent: false
 
   format:
     desc: 'Format NixOS configuration files'
     cmds:
       - nixfmt configuration.nix
+      - nixfmt flake.nix
+      - nixfmt var.nix
     silent: false
 
   show:
@@ -59,3 +67,12 @@ tasks:
     cmds:
       - fastfetch
     silent: false
+
+  channel-add:
+    desc: 'Adding channels'
+    cmds:
+      - nix-channel --add https://nixos.org/channels/nixos-25.05 nixos
+      - nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.05.tar.gz nixos-wsl
+      # - nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
+    silent: false
+
