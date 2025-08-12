@@ -1,22 +1,25 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-wsl = {
       url = "github:nix-community/nixos-wsl/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-unstable = { url = "github:NixOS/nixpkgs/nixos-unstable"; };
-
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
-  outputs = { nixpkgs, nixos-wsl, nixpkgs-unstable, vscode-server, ... }:
+  outputs = { nixpkgs, nixos-wsl, nixpkgs-unstable, vscode-server, claude-code,  ... }:
     let var = import ./var.nix;
     in {
       nixosConfigurations."${var.hostname}" = nixpkgs.lib.nixosSystem {
@@ -26,15 +29,22 @@
           ./configuration.nix
           nixos-wsl.nixosModules.wsl
           vscode-server.nixosModules.default
+
           ({ config, pkgs, ... }:
             let
+              # unstable prefix in systemPackages to use unstable package instead.
               unstable = import nixpkgs-unstable {
                 inherit (config.nixpkgs) system;
                 inherit (config.nixpkgs) config;
               };
             in {
               _module.args = { inherit var; };
+
+              # Use always latest version with prefix in systemPackages
+              nixpkgs.overlays = [ claude-code.overlays.default ];
+
               services.vscode-server.enable = true;
+
               environment.systemPackages = with pkgs; [
                 # Core Packages
                 neovim
@@ -111,7 +121,7 @@
                 tfsec
                 terraform-docs
                 tfupdate
-                claude-code
+                unstable.claude-code
 
                 # Security
                 clamav
