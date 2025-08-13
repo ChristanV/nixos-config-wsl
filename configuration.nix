@@ -1,9 +1,24 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
-{ config, pkgs, var, ... }:
+{ config, pkgs, var, inputs, ... }:
 
 {
   system.stateVersion = "25.05";
+
+  system.autoUpgrade = {
+    enable = true;
+    flake = inputs.self.outPath;
+    flags = [ ];
+    dates = "12:00";
+    randomizedDelaySec = "45min";
+    allowReboot = false;
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
+  };
 
   # DNS fix for WSL2
   networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
@@ -191,6 +206,10 @@
     alias kcgp='kc get pods -l app.kubernetes.io/instance='
     alias kcgd='kc get deploy -l app.kubernetes.io/instance='
     alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
+    alias azlogin='az login'
+    alias awslogin='aws sso login'
+    alias awsconfigure='aws configure sso'
+    alias awssso='aws configure sso-session'
 
     # Disabling paging by default
     export PAGER=cat
