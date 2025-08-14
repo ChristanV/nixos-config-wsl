@@ -1,6 +1,6 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
-{ config, pkgs, var, inputs, ... }:
+{ pkgs, var, inputs, ... }:
 
 {
   system.stateVersion = "25.05";
@@ -33,7 +33,7 @@
   programs.nix-ld = {
     enable = true;
     package = pkgs.nix-ld-rs; # Fix for vscode 24.05
-    libraries = config.hardware.graphics.extraPackages;
+    libraries = with pkgs; [ libxcrypt-legacy ];
   };
 
   virtualisation.docker = {
@@ -208,8 +208,9 @@
     alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
     alias azlogin='az login'
     alias awslogin='aws sso login'
-    alias awsconfigure='aws configure sso'
+    alias awsconfigure='aws configure sso --profile '
     alias awssso='aws configure sso-session'
+    alias show='fastfetch'
 
     # Disabling paging by default
     export PAGER=cat
