@@ -196,9 +196,6 @@
     alias tf='terraform'
     alias tg='terragrunt'
     alias vi='nvim .'
-    alias nixr='sudo nixos-rebuild switch'
-    alias nixb='nixos-rebuild build'
-    alias nixs='nix-shell'
     alias ll='ls -alF'
     alias la='ls -A'
     alias l='ls -CF'
@@ -211,6 +208,10 @@
     alias awsconfigure='aws configure sso --profile '
     alias awssso='aws configure sso-session'
     alias show='fastfetch'
+    alias nix-shell'nix-shell --run zsh'
+    alias nixs='nix-shell --run zsh'
+    alias nixr='sudo nixos-rebuild switch'
+    alias nixb='nixos-rebuild build'
 
     # Disabling paging by default
     export PAGER=cat

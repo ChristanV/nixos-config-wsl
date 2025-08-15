@@ -1,11 +1,10 @@
 # Run with 'nix-shell example.nix'
 # Can use this as template for default.nix and just run new environments with 'nix-shell'
 
-{ pkgs ? import <nixpkgs> {}, unstable ? import<nixos-unstable> {} }:
+{ pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
   buildInputs = [
-    unstable.deno # If newer versions are required prefix with 'unstable.'
     pkgs.nodejs_20 # Default to stable channel
   ];
 
