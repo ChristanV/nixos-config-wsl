@@ -85,7 +85,6 @@
 
                 # LSP's for neovim
                 terraform-ls
-                terraform-lsp
                 tflint
                 yaml-language-server
                 ansible-language-server
@@ -123,11 +122,12 @@
                 tfsec
                 terraform-docs
                 tfupdate
+                terrascan
                 unstable.claude-code
 
                 # Security
                 clamav
-                _1password-cli
+                unstable._1password-cli
 
                 # Other
                 fastfetch
