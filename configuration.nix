@@ -256,10 +256,12 @@
   wsl = {
     enable = true;
     defaultUser = var.username;
-    wslConf.network.hostname = var.hostname;
-    wslConf.network.generateResolvConf = false;
-    wslConf.boot.command = ""; # Default startup commands
-    wslConf.user.default = var.username;
+    wslConf = {
+      network.hostname = var.hostname;
+      network.generateResolvConf = false;
+      boot.command = ""; # Default startup commands
+      user.default = var.username;
+    };
     useWindowsDriver = true;
 
     extraBin = with pkgs; [

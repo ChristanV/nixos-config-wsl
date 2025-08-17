@@ -107,6 +107,10 @@
                 jdt-language-server
                 postgres-lsp
 
+                # Linters and checkers
+                statix
+                deadnix
+
                 dockerfile-language-server-nodejs
                 pyright
                 gopls
