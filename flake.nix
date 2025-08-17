@@ -119,12 +119,13 @@
                 gitleaks
                 pre-commit
                 unstable.terraform
-                trunk-io
+                unstable.trunk-io
                 tfsec
                 terraform-docs
                 tfupdate
                 terrascan
                 unstable.claude-code
+                gh
 
                 # Security
                 clamav
