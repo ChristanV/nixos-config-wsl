@@ -50,7 +50,7 @@ Stop distro again
 Then can open again with default username applied and can continue as normal
 
 ### 3. Set NixOs as default WSL Distro
-In Powershell run  
+In Powershell run
 * `wsl -s NixOS`
 
 ### Notes
@@ -59,7 +59,7 @@ If you have changed the wsl default user you will need to reclone this in the ne
 
 Known unstable items I am still trying to resolve.
 
-* Sometimes first time switch fails on new installs, rerunning resolves the issue. 
+* Sometimes first time switch fails on new installs, rerunning resolves the issue.
 
 See samples folder for configuration files for nix shell for dev environments
 

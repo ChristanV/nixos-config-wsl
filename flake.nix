@@ -19,10 +19,19 @@
     };
   };
 
-  outputs = { nixpkgs, nixos-wsl, nixpkgs-unstable, vscode-server, claude-code
-    , ... }@inputs:
-    let var = import ./var.nix;
-    in {
+  outputs =
+    {
+      nixpkgs,
+      nixos-wsl,
+      nixpkgs-unstable,
+      vscode-server,
+      claude-code,
+      ...
+    }@inputs:
+    let
+      var = import ./var.nix;
+    in
+    {
       nixosConfigurations."${var.hostname}" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
@@ -32,14 +41,16 @@
           nixos-wsl.nixosModules.wsl
           vscode-server.nixosModules.default
 
-          ({ config, pkgs, ... }:
+          (
+            { config, pkgs, ... }:
             let
               # unstable prefix in systemPackages to use unstable package instead.
               unstable = import nixpkgs-unstable {
                 inherit (config.nixpkgs) system;
                 inherit (config.nixpkgs) config;
               };
-            in {
+            in
+            {
               _module.args = { inherit var; };
 
               # Use always latest version with prefix in systemPackages
@@ -115,7 +126,7 @@
                 k3s
                 minikube
                 jdk23
-                nixfmt-classic
+                nixfmt-rfc-style
                 gitleaks
                 pre-commit
                 unstable.terraform
@@ -145,7 +156,8 @@
                 xclip
                 cacert
               ];
-            })
+            }
+          )
         ];
       };
     };
