@@ -69,6 +69,7 @@
                 lazygit
                 fd
                 ripgrep
+                zoxide
                 chromium
                 flyctl
                 sops
@@ -133,6 +134,7 @@
                 fastfetch
                 starship
                 zsh
+                zsh-fzf-tab
                 glow
                 steampipe
                 btop
