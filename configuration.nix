@@ -240,6 +240,16 @@
     }
     precmd_functions+=(keep_current_path)
 
+    venv() {
+      virtual_env_path="$HOME/.virtualenvs/''${PWD##*/}"
+      if [ ! -d "$virtual_env_path" ]; then
+        echo "Creating virtual environment..."
+        python3 -m venv $virtual_env_path
+      fi
+      echo "Activating virtual environment..."
+      source $virtual_env_path/bin/activate
+    }
+
     cat << EOF > ~/.zshrc
     ZSH_HIGHLIGHT_STYLES[comment]='fg=8'                # gray
     ZSH_HIGHLIGHT_STYLES[command]='fg=#769ff0'
