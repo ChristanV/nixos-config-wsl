@@ -100,6 +100,7 @@
         "ssh"
         "terraform"
         "fzf"
+        "poetry"
       ];
     };
 
@@ -209,7 +210,6 @@
     alias kns='kubens'
     alias tf='terraform'
     alias tg='terragrunt'
-    vi() { if [ $# -eq 0 ]; then nvim .; else nvim "$@"; fi; }
     alias ll='ls -alF'
     alias la='ls -A'
     alias l='ls -CF'
@@ -239,6 +239,15 @@
       printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
     }
     precmd_functions+=(keep_current_path)
+
+    # Functions
+    vi() {
+      if [ $# -eq 0 ]; then
+        nvim .;
+      else
+        nvim "$@";
+      fi;
+    }
 
     venv() {
       virtual_env_path="$HOME/.virtualenvs/''${PWD##*/}"
