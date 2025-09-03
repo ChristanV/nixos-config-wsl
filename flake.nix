@@ -135,7 +135,7 @@
                 gitleaks
                 pre-commit
                 unstable.terraform
-                unstable.trunk-io
+                trunk-io
                 tfsec
                 terraform-docs
                 tfupdate
