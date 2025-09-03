@@ -120,10 +120,11 @@
 
                 # Development
                 terragrunt
-                python313
+                python311
+                python311Packages.pip
                 poetry
                 go
-                nodejs_22
+                nodejs_24
                 typescript
                 lua
                 yarn

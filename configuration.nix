@@ -64,13 +64,21 @@
     };
   };
 
-  security.apparmor.enable = true;
-  security.audit.enable = true;
+  security = {
+    apparmor.enable = true;
+    audit.enable = true;
+    pki.certificates = [
+      "/etc/ssl/certs/ca-bundle.crt"
+    ];
+  };
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    ssl-cert-file = "/etc/ssl/certs/ca-bundle.crt";
+  };
 
   users.users."${var.username}" = {
     extraGroups = [ "docker" ];
@@ -269,6 +277,12 @@
     ZSH_HIGHLIGHT_STYLES[path]='fg=white'
     EOF
   '';
+
+  environment.variables = {
+    # Fix for Trunk
+    NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+    SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+  };
 
   systemd.tmpfiles.rules = [ "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash" ];
 
