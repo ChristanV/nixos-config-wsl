@@ -267,6 +267,11 @@
       source $virtual_env_path/bin/activate
     }
 
+    awsexport() {
+      echo "Exporting AWS credentials for profile: $AWS_PROFILE"
+      eval $(aws configure export-credentials --format env)
+    }
+
     cat << EOF > ~/.zshrc
     ZSH_HIGHLIGHT_STYLES[comment]='fg=8'                # gray
     ZSH_HIGHLIGHT_STYLES[command]='fg=#769ff0'
