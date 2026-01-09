@@ -85,7 +85,9 @@
                 flyctl
                 sops
                 gnupg
+                monkeysphere
                 k9s
+                kind
                 ssm-session-manager-plugin
                 awscli2
                 docker_28
@@ -100,7 +102,6 @@
                 tflint
                 yaml-language-server
                 ansible-language-server
-                ansible-lint
                 lua-language-server
                 nodePackages.typescript-language-server
                 nodePackages.bash-language-server
@@ -120,8 +121,8 @@
 
                 # Development
                 terragrunt
-                python311
-                python311Packages.pip
+                python312
+                python312Packages.pip
                 poetry
                 go
                 nodejs_24
@@ -143,6 +144,10 @@
                 unstable.claude-code
                 gemini-cli
                 gh
+                redpanda-client
+
+                stdenv.cc.cc.lib # This provides libstdc++ for python numpy
+                zlib
 
                 # Security
                 clamav

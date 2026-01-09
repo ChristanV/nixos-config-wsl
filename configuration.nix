@@ -242,6 +242,7 @@
     export EDITOR="nvim"
     export KUBE_CONFIG_PATH=~/.kube/config
     export STARSHIP_CONFIG=~/.config/starship-config/starship.toml
+    export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
 
     keep_current_path() {
       printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
