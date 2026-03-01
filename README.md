@@ -13,7 +13,7 @@ Make sure the following is installed for this quickstart.
 
 Download the WSL distribution for NixOS follow reference link below.
 
-https://github.com/nix-community/NixOS-WSL/releases/tag/2505.7.0
+https://github.com/nix-community/NixOS-WSL/releases
 
 Reference: https://nix-community.github.io/NixOS-WSL/install.html
 Packages: https://search.nixos.org/packages
