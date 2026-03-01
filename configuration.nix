@@ -40,7 +40,7 @@
   # Allow linked libraries
   programs.nix-ld = {
     enable = true;
-    package = pkgs.nix-ld-rs; # Fix for vscode 24.05
+    package = pkgs.nix-ld; # Fix for vscode 24.05
     libraries = with pkgs; [ libxcrypt-legacy ];
   };
 

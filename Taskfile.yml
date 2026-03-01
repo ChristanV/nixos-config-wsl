@@ -71,7 +71,7 @@ tasks:
   channel-add:
     desc: 'Adding channels'
     cmds:
-      - nix-channel --add https://nixos.org/channels/nixos-25.05 nixos
-      - nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.05.tar.gz nixos-wsl
+      - nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
+      - nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.11.tar.gz nixos-wsl
       # - nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
     silent: false

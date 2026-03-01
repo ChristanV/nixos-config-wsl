@@ -1,10 +1,10 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-wsl = {
-      url = "github:nix-community/nixos-wsl/release-25.05";
+      url = "github:nix-community/nixos-wsl/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -101,18 +101,17 @@
                 terraform-ls
                 tflint
                 yaml-language-server
-                ansible-language-server
                 lua-language-server
                 nodePackages.typescript-language-server
                 nodePackages.bash-language-server
                 jdt-language-server
-                postgres-lsp
+                postgres-language-server
 
                 # Linters and checkers
                 statix
                 deadnix
 
-                dockerfile-language-server-nodejs
+                dockerfile-language-server
                 pyright
                 gopls
                 nodePackages.typescript-language-server
@@ -131,7 +130,7 @@
                 yarn
                 k3s
                 minikube
-                jdk23
+                jdk25
                 nixfmt-rfc-style
                 gitleaks
                 pre-commit
