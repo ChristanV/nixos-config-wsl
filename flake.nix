@@ -66,7 +66,7 @@
                 wget
                 stern
                 jq
-                yq
+                yq-go
                 kubernetes-helm
                 openssl
                 go-task
