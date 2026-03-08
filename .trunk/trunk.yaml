@@ -1,7 +1,7 @@
+---
 version: 0.1
 cli:
   version: 1.25.0
-
 plugins:
   sources:
     - id: trunk
@@ -9,62 +9,52 @@ plugins:
       uri: https://github.com/trunk-io/plugins
 
 lint:
+  ignore:
+    - linters: [ALL]
+      paths: [hardware-configuration.nix]
   enabled:
-    # Security scanning (equivalent to gitleaks)
+    - checkov@3.2.507
+    - trufflehog@3.90.13
     - git-diff-check
-    - markdownlint@0.48.0
-    - nix-flake-check
-    - nixpkgs-fmt@1.3.0
-    - prettier@3.8.1
+    - gitleaks@8.30.0
+    - statix@SYSTEM
+    - deadnix@SYSTEM
+    - nixfmt@SYSTEM
     - shellcheck@0.11.0
     - shfmt@3.6.0
-    - gitleaks@8.29.0
-
-    # Built-in formatters and linters (equivalent to pre-commit-hooks)
-    - trufflehog@3.90.13 # Additional security scanning
-    - checkov@3.2.507 # Infrastructure security
-
-    # YAML checking
     - yamllint@1.38.0
-
-    # Nix tooling
-
-    - deadnix@SYSTEM
-    - statix@SYSTEM
+    - markdownlint@0.48.0
+    - prettier@3.8.1
 
   definitions:
     - name: nixfmt
       files: [nix]
       commands:
         - output: rewrite
-          run: nixfmt ${target}
+          run: nixfmt -
+          stdin: true
           success_codes: [0]
+      environment:
+        - name: PATH
+          list: ["${env.HOME}/.nix-profile/bin", /run/current-system/sw/bin]
+
     - name: deadnix
       files: [nix]
       commands:
-        - output: sarif
-          success_codes: [0, 1]
+        - name: lint
+          output: sarif
           run: deadnix --output-format json ${target}
+          success_codes: [0, 1]
+          read_output_from: stdout
+
     - name: statix
       files: [nix]
       commands:
-        - output: sarif
-          success_codes: [0, 1]
+        - name: lint
+          output: sarif
           run: statix check --format json ${target}
-    - name: nix-flake-check
-      files: [nix]
-      commands:
-        - output: rewrite
-          formatter: true
-          run: nix flake check
-          success_codes: [0]
-      suggest_if: config_present
-      direct_configs:
-        - flake.nix
-      known_good_version: system
-      environment:
-        - name: PATH
-          list: ["${workspace}"]
+          success_codes: [0, 1]
+          read_output_from: stdout
 
 actions:
   enabled:
@@ -72,11 +62,18 @@ actions:
     - trunk-check-pre-push
     - trunk-fmt-pre-commit
     - trunk-upgrade-available
+    - nix-flake-check
 
-# Custom actions for Nix flake check
+  definitions:
+    - id: nix-flake-check
+      description: Run nix flake check on the whole repo
+      run: nix flake check
+      triggers:
+        - git_hooks: [pre-push]
+
 runtimes:
   enabled:
     - go@1.21.0
+    - rust@1.82.0
     - node@22.16.0
     - python@3.10.8
-    - rust@1.82.0

@@ -211,83 +211,87 @@
     '';
   };
 
-  environment.etc."zshrc".text = ''
-    eval "$(starship init zsh)"
-    alias kc='kubectl'
-    alias kctx='kubectx'
-    alias kns='kubens'
-    alias tf='terraform'
-    alias tg='terragrunt'
-    alias ll='ls -alF'
-    alias la='ls -A'
-    alias l='ls -CF'
-    alias lg=lazygit
-    alias kcgp='kc get pods -l app.kubernetes.io/instance='
-    alias kcgd='kc get deploy -l app.kubernetes.io/instance='
-    alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
-    alias azlogin='az login'
-    alias awslogin='aws sso login'
-    alias awsconfigure='aws configure sso --profile '
-    alias awssso='aws configure sso-session'
-    alias show='fastfetch'
-    alias nix-shell'nix-shell --run zsh'
-    alias nixs='nix-shell --run zsh'
-    alias nixr='sudo nixos-rebuild switch'
-    alias nixb='nixos-rebuild build'
+  environment = {
+    etc."zshrc".text = ''
+      eval "$(starship init zsh)"
+      alias kc='kubectl'
+      alias kctx='kubectx'
+      alias kns='kubens'
+      alias tf='terraform'
+      alias tg='terragrunt'
+      alias ll='ls -alF'
+      alias la='ls -A'
+      alias l='ls -CF'
+      alias lg=lazygit
+      alias kcgp='kc get pods -l app.kubernetes.io/instance='
+      alias kcgd='kc get deploy -l app.kubernetes.io/instance='
+      alias kctp='kc top pods --containers -l app.kubernetes.io/instance='
+      alias azlogin='az login'
+      alias awslogin='aws sso login'
+      alias awsconfigure='aws configure sso --profile '
+      alias awssso='aws configure sso-session'
+      alias show='fastfetch'
+      alias nix-shell'nix-shell --run zsh'
+      alias nixs='nix-shell --run zsh'
+      alias nixr='sudo nixos-rebuild switch'
+      alias nixb='nixos-rebuild build'
 
-    # Disabling paging by default
-    export PAGER=cat
-    export LESS=
+      # Disabling paging by default
+      export PAGER=cat
+      export LESS=
 
-    export EDITOR="nvim"
-    export KUBE_CONFIG_PATH=~/.kube/config
-    export STARSHIP_CONFIG=~/.config/starship-config/starship.toml
-    export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
+      export EDITOR="nvim"
+      export KUBE_CONFIG_PATH=~/.kube/config
+      export STARSHIP_CONFIG=~/.config/starship-config/starship.toml
+      export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
 
-    keep_current_path() {
-      printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
-    }
-    precmd_functions+=(keep_current_path)
+      keep_current_path() {
+        printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
+      }
+      precmd_functions+=(keep_current_path)
 
-    # Functions
-    vi() {
-      if [ $# -eq 0 ]; then
-        nvim .;
-      else
-        nvim "$@";
-      fi;
-    }
+      # Functions
+      vi() {
+        if [ $# -eq 0 ]; then
+          nvim .;
+        else
+          nvim "$@";
+        fi;
+      }
 
-    venv() {
-      virtual_env_path="$HOME/.virtualenvs/''${PWD##*/}"
-      if [ ! -d "$virtual_env_path" ]; then
-        echo "Creating virtual environment..."
-        python3 -m venv $virtual_env_path
-      fi
-      echo "Activating virtual environment..."
-      source $virtual_env_path/bin/activate
-    }
+      venv() {
+        virtual_env_path="$HOME/.virtualenvs/''${PWD##*/}"
+        if [ ! -d "$virtual_env_path" ]; then
+          echo "Creating virtual environment..."
+          python3 -m venv $virtual_env_path
+        fi
+        echo "Activating virtual environment..."
+        source $virtual_env_path/bin/activate
+      }
 
-    awsexport() {
-      echo "Exporting AWS credentials for profile: $AWS_PROFILE"
-      eval $(aws configure export-credentials --format env)
-    }
+      awsexport() {
+        echo "Exporting AWS credentials for profile: $AWS_PROFILE"
+        eval $(aws configure export-credentials --format env)
+      }
 
-    cat << EOF > ~/.zshrc
-    ZSH_HIGHLIGHT_STYLES[comment]='fg=8'                # gray
-    ZSH_HIGHLIGHT_STYLES[command]='fg=#769ff0'
-    ZSH_HIGHLIGHT_STYLES[alias]='fg=#769ff0'
-    ZSH_HIGHLIGHT_STYLES[function]='fg=#769ff0'
-    ZSH_HIGHLIGHT_STYLES[builtin]='fg=#769ff0'
-    ZSH_HIGHLIGHT_STYLES[globbing]='fg=red'
-    ZSH_HIGHLIGHT_STYLES[path]='fg=white'
-    EOF
-  '';
+      cat << EOF > ~/.zshrc
+      ZSH_HIGHLIGHT_STYLES[comment]='fg=8'                # gray
+      ZSH_HIGHLIGHT_STYLES[command]='fg=#769ff0'
+      ZSH_HIGHLIGHT_STYLES[alias]='fg=#769ff0'
+      ZSH_HIGHLIGHT_STYLES[function]='fg=#769ff0'
+      ZSH_HIGHLIGHT_STYLES[builtin]='fg=#769ff0'
+      ZSH_HIGHLIGHT_STYLES[globbing]='fg=red'
+      ZSH_HIGHLIGHT_STYLES[path]='fg=white'
+      EOF
+    '';
 
-  environment.variables = {
-    # Fix for Trunk
-    NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
-    SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+    etc."ssl/cert.pem".source = "/etc/ssl/certs/ca-bundle.crt";
+
+    variables = {
+      # Fix for Trunk
+      NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+    };
   };
 
   systemd.tmpfiles.rules = [ "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash" ];
